@@ -1,15 +1,26 @@
 import os
 from pathlib import Path
+from dotenv import load_dotenv
+
 from django.core.management.utils import get_random_secret_key
+
+
+load_dotenv()
+
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-%xhzqw+gis&3u6n38hf2e29dt9(q$1#+jt4rs3q)p1zo5!_-$j'
 
-DEBUG = True
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = os.getenv('SECRET_KEY', get_random_secret_key())
 
-ALLOWED_HOSTS = [os.getenv('DOMEN', 'foodgram.zapto.org'), '127.0.0.1', 'localhost']
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = os.getenv('DEBUG', False) == 'True'
+
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', os.getenv('DOMEN', 'foodgram')]
 
 
 INSTALLED_APPS = [
@@ -19,9 +30,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework.authtoken',
-    'rest_framework',
     'djoser',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'users',
 ]
 
 MIDDLEWARE = [
