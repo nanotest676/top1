@@ -5,16 +5,16 @@ from django.db.models import UniqueConstraint
 
 class User(AbstractUser):
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username', 'first_name', 'last_name']
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'username']
     
     email = models.EmailField(
-        verbose_name='Адрес электронной почты',
-        max_length=254,
+        verbose_name='Электронная почта',
         unique=True,
+        max_length=254
     )
     
     class Meta:
-        ordering = ['id']
+        ordering = ['id',]
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'
     
@@ -25,21 +25,24 @@ class User(AbstractUser):
 class Subscribe(models.Model):
     user = models.ForeignKey(
         User,
+        verbose_name='Подписчик',
         related_name='subscriber',
-        verbose_name="Подписчик",
         on_delete=models.CASCADE,
     )
     author = models.ForeignKey(
         User,
+        verbose_name='Автор',
         related_name='subscribing',
-        verbose_name="Автор",
         on_delete=models.CASCADE,
     )
     
     class Meta:
-        ordering = ['-id']
+        ordering = ['-id',]
         constraints = [
-            UniqueConstraint(fields=['user', 'author'], name='unique_subscription')
+            UniqueConstraint(
+                name='unique_subscription',
+                fields=['user', 'author']
+            )
         ]
         verbose_name = 'Подписка'
         verbose_name_plural = 'Подписки'
