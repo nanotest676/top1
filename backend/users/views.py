@@ -5,7 +5,6 @@ from rest_framework.pagination import PageNumberPagination
 
 User = get_user_model()
 
-
 class CustomPagination(PageNumberPagination):
     page_size_query_param = "limit"
 
