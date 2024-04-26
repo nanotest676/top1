@@ -29,7 +29,10 @@ INSTALLED_APPS = [
     'djoser',
     'rest_framework',
     'rest_framework.authtoken',
+    'django_filters'
     'users',
+    'api',
+    'recipes'
 ]
 
 MIDDLEWARE = [
@@ -102,8 +105,8 @@ USE_L10N = True
 USE_TZ = True
 
 
-STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR / 'collected_static'
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'static/'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
