@@ -9,6 +9,7 @@ load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+AUTH_USER_MODEL = 'users.User'
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -29,10 +30,10 @@ INSTALLED_APPS = [
     'djoser',
     'rest_framework',
     'rest_framework.authtoken',
-    'django_filters'
+    'django_filters',
     'users',
     'api',
-    'recipes'
+    'recipes',
 ]
 
 MIDDLEWARE = [
