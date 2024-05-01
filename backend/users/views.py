@@ -6,7 +6,6 @@ from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework import status
-
 from users.serializers import CustomUserSerializer, SubscribeSerializer
 from .models import Subscribe
 
@@ -29,15 +28,22 @@ class CustomUserViewSet(UserViewSet):
         user = request.user
         author_id = self.kwargs.get('id')
         author = get_object_or_404(User, id=author_id)
+        
+        if user == author:
+            return Response({"error": "Нельзя подписаться на самого себя"}, status=status.HTTP_400_BAD_REQUEST)
+
         if request.method == 'DELETE':
-            subscription = get_object_or_404(
-                Subscribe,
-                user=user,
-                author=author
-            )
-            subscription.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
+            subscription = Subscribe.objects.filter(user=user, author=author).first()
+            if subscription:
+                subscription.delete()
+                return Response(status=status.HTTP_204_NO_CONTENT)
+            else:
+                return Response({"error": "Вы не подписаны на этого пользователя"}, status=status.HTTP_400_BAD_REQUEST)
+
         elif request.method == 'POST':
+            if Subscribe.objects.filter(user=user, author=author).exists():
+                return Response({"error": "Вы уже подписаны на этого пользователя"}, status=status.HTTP_400_BAD_REQUEST)
+            
             serializer = SubscribeSerializer(
                 author,
                 data=request.data,

@@ -2,44 +2,43 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.db.models import UniqueConstraint
 
-
-class User(AbstractUser):
+class CustomUser(AbstractUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username', 'first_name', 'last_name']
     
     email = models.EmailField(
-        verbose_name='Адрес электронной почты',
+        verbose_name='Email Address',
         max_length=254,
         unique=True,
     )
     
     class Meta:
         ordering = ['id']
-        verbose_name = 'Пользователь'
-        verbose_name_plural = 'Пользователи'
+        verbose_name = 'User'
+        verbose_name_plural = 'Users'
     
     def __str__(self):
         return self.email
 
-
 class Subscribe(models.Model):
-    user = models.ForeignKey(
-        User,
-        related_name='subscriber',
-        verbose_name="Подписчик",
+    subscriber = models.ForeignKey(
+        CustomUser,
+        related_name='subscriptions',
+        verbose_name="Subscriber",
         on_delete=models.CASCADE,
     )
+    
     author = models.ForeignKey(
-        User,
-        related_name='subscribing',
-        verbose_name="Автор",
+        CustomUser,
+        related_name='subscribers',
+        verbose_name="Author",
         on_delete=models.CASCADE,
     )
     
     class Meta:
         ordering = ['-id']
         constraints = [
-            UniqueConstraint(fields=['user', 'author'], name='unique_subscription')
+            UniqueConstraint(fields=['subscriber', 'author'], name='unique_subscription')
         ]
-        verbose_name = 'Подписка'
-        verbose_name_plural = 'Подписки'
+        verbose_name = 'Subscription'
+        verbose_name_plural = 'Subscriptions'
