@@ -1,13 +1,13 @@
+from rest_framework import status
 from django.contrib.auth import get_user_model
-from djoser.views import UserViewSet
-from rest_framework.pagination import PageNumberPagination
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.pagination import PageNumberPagination
 from django.shortcuts import get_object_or_404
-from rest_framework.response import Response
-from rest_framework import status
 from users.serializers import CustomUserSerializer, SubscribeSerializer
 from .models import Subscribe
+from djoser.views import UserViewSet
+from rest_framework.response import Response
 
 User = get_user_model()
 
@@ -16,17 +16,19 @@ class CustomPagination(PageNumberPagination):
 
 class CustomUserViewSet(UserViewSet):
     queryset = User.objects.all()
-    serializer_class = CustomUserSerializer
     pagination_class = CustomPagination
+    serializer_class = CustomUserSerializer
+    
 
     @action(
         detail=True,
-        methods=['post', 'delete'],
-        permission_classes=[IsAuthenticated,]
+        permission_classes=[IsAuthenticated,],
+        methods=['post', 'delete']
+
     )
     def subscribe(self, request, **kwargs):
-        user = request.user
         author_id = self.kwargs.get('id')
+        user = request.user
         author = get_object_or_404(User, id=author_id)
         
         if user == author:
@@ -54,8 +56,8 @@ class CustomUserViewSet(UserViewSet):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     @action(
+        permission_classes=[IsAuthenticated,],
         detail=False,
-        permission_classes=[IsAuthenticated,]
     )
     def subscriptions(self, request):
         user = request.user
@@ -63,7 +65,7 @@ class CustomUserViewSet(UserViewSet):
         pages = self.paginate_queryset(queryset)
         serializer = SubscribeSerializer(
             pages,
+            context={'request': request},
             many=True,
-            context={'request': request}
         )
         return self.get_paginated_response(serializer.data)
