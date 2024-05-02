@@ -11,7 +11,7 @@ from recipes.models import Recipe
 
 User = get_user_model()
 
-# Сериализатор для создания пользователей
+
 class CustomUserCreateSerializer(UserCreateSerializer):
     class Meta:
         model = User
@@ -20,7 +20,7 @@ class CustomUserCreateSerializer(UserCreateSerializer):
             'password',
         )
 
-# Сериализатор пользователей
+
 class CustomUserSerializer(UserSerializer):
     is_subscribed = SerializerMethodField(read_only=True)
 
@@ -41,7 +41,7 @@ class CustomUserSerializer(UserSerializer):
             return False
         return Subscribe.objects.filter(user=user, author=object).exists()
 
-# Сериализатор для краткого представления рецептов
+
 class RecipeShortSerializer(ModelSerializer):
     image = Base64ImageField()
 
@@ -54,7 +54,7 @@ class RecipeShortSerializer(ModelSerializer):
             'cooking_time'
         )
 
-# Сериализатор для подписок пользователей
+
 class SubscribeSerializer(CustomUserSerializer):
     recipes_count = SerializerMethodField()
     recipes = SerializerMethodField()
