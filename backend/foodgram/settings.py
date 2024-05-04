@@ -15,6 +15,9 @@ DEBUG = os.getenv('DEBUG', default='True') == 'True'
 ALLOWED_HOSTS = os.environ.get(
     'ALLOWED_HOSTS', default='localhost').split(', ')
 
+CSRF_TRUSTED_ORIGINS = [os.environ.get(
+    'CSRF_TRUSTED_ORIGINS', default='http://127.0.0.1').split(', ')]
+
 AUTH_USER_MODEL = 'users.User'
 
 INSTALLED_APPS = [
