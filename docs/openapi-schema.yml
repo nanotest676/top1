@@ -433,6 +433,8 @@ paths:
     get:
       operationId: Профиль пользователя
       description: 'Доступно всем пользователям.'
+      security:
+        - Token: [ ]
       parameters:
         - name: id
           in: path
@@ -449,6 +451,8 @@ paths:
           description: ''
         '404':
           $ref: '#/components/responses/NotFound'
+        '401':
+          $ref: '#/components/responses/AuthenticationError'
       tags:
         - Пользователи
   /api/users/me/:
@@ -601,7 +605,7 @@ paths:
           in: query
           description: Поиск по частичному вхождению в начале названия ингредиента.
           schema:
-            type: string
+            type: integer
       responses:
         '200':
           content:
@@ -623,7 +627,7 @@ paths:
           required: true
           description: ''
           schema:
-            type: integer
+            type: string
       responses:
         '200':
           content:
