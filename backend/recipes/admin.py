@@ -32,12 +32,13 @@ class RecipeAdmin(admin.ModelAdmin):
 
     @admin.display(description='Тэги')
     def get_tags(self, obj):
-         return ', '.join([tag.name for tag in obj.tags.all()])
+        return ', '.join([tag.name for tag in obj.tags.all()])
 
     @admin.display(description=' Ингредиенты ')
     def get_ingredients(self, obj):
         return '\n '.join([
-            f'{item.ingredient.name} - {item.amount} {item.ingredient.measurement_unit}.'
+            f'{item.ingredient.name} - {item.amount} '
+            f'{item.ingredient.measurement_unit}.'
             for item in obj.recipeingredients.all()
         ])
 

@@ -70,9 +70,9 @@ class UserCreateSerializer(serializers.ModelSerializer):
 
 
 class UserListSerializer(
-        serializers.ModelSerializer,
-        GetIsSubscribedMixin,
-    ):
+    serializers.ModelSerializer,
+    GetIsSubscribedMixin,
+):
     is_subscribed = serializers.BooleanField(read_only=True)
 
     class Meta:
@@ -80,7 +80,6 @@ class UserListSerializer(
         fields = (
             'email', 'username', 'id',
             'first_name', 'last_name', 'is_subscribed')
-
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -127,9 +126,9 @@ class IngredientSerializer(serializers.ModelSerializer):
 
 
 class RecipeUserSerializer(
-        serializers.ModelSerializer,
-        GetIsSubscribedMixin,
-    ):
+    serializers.ModelSerializer,
+    GetIsSubscribedMixin,
+):
     is_subscribed = serializers.SerializerMethodField(
         read_only=True)
 
@@ -200,7 +199,6 @@ class RecipeWriteSerializer(serializers.ModelSerializer):
         queryset=Tag.objects.all(),
         many=True,
     )
-    
 
     class Meta:
         fields = '__all__'
