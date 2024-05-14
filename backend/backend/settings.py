@@ -10,7 +10,7 @@ SECRET_KEY = 'your_secret_key_here'
 DEBUG = os.getenv('DEBUG', default='True') == 'True'
 
 # Разрешенные хосты (в продакшене нужно указать домены вашего сайта)
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', os.getenv('DOMAIN', default='localhost')]
 
 # Подключение установленных приложений
 INSTALLED_APPS = [
@@ -24,9 +24,7 @@ INSTALLED_APPS = [
     'djoser',
     'rest_framework',
     'rest_framework.authtoken',
-    #'users.apps.UsersConfig',
-    #'recipes.apps.RecipesConfig',
-    #'api.apps.ApiConfig',
+    'users'
 ]
 
 # Middleware классы
@@ -68,6 +66,7 @@ DATABASES = {
         'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
     }
 }
+AUTH_USER_MODEL = 'users.CustomUser'
 
 # Настройки локализации и временной зоны
 LANGUAGE_CODE = 'en-us'
