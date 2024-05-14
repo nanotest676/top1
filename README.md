@@ -1,1 +1,1 @@
-Дипломный проект
+# praktikum_new_diplom

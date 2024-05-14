@@ -83,7 +83,7 @@ class Recipe(models.Model):
     cooking_time = models.PositiveSmallIntegerField(
         verbose_name='Время приготовления в минутах',
         validators=[validators.MinValueValidator(
-            1, message='Мин. время приготовления 1 минута'
+            1, message='Время приготовления 1 минута'
         )]
     )
     pub_date = models.DateTimeField('Дата публикации', auto_now_add=True)
