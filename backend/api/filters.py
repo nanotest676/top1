@@ -6,6 +6,7 @@ from recipes.models import Ingredient, Recipe, Tag
 
 User = get_user_model()
 
+
 class IngredientFilter(filters.FilterSet):
     """Filter for ingredients by name, supporting both startswith and contains lookups."""
     name = filters.CharFilter(method='filter_name')
@@ -20,13 +21,14 @@ class IngredientFilter(filters.FilterSet):
         startswith_lookup = f'{name}__istartswith'
         contains_lookup = f'{name}__icontains'
         return queryset.filter(
-            Q(**{startswith_lookup: value}) | Q(**{contains_lookup: value})
+            Q({startswith_lookup: value}) | Q({contains_lookup: value})
         ).annotate(
             is_start=ExpressionWrapper(
-                Q(**{startswith_lookup: value}),
+                Q({startswith_lookup: value}),
                 output_field=BooleanField()
             )
         ).order_by('-is_start')
+
 
 class RecipeFilter(filters.FilterSet):
     """Filter for recipes by tags, author, is_favorited and is_in_shopping_cart."""
